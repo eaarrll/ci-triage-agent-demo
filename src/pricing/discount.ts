@@ -6,8 +6,11 @@ export function round2(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
+export function isDiscountEligible(subtotal: number): boolean {
+  return subtotal > DISCOUNT_THRESHOLD;
+}
+
 export function applyDiscount(subtotal: number): number {
   if (subtotal < 0) throw new RangeError("subtotal must be non-negative");
-  if (subtotal >= DISCOUNT_THRESHOLD) return round2(subtotal * (1 - DISCOUNT_RATE));
-  return round2(subtotal);
+  return isDiscountEligible(subtotal) ? round2(subtotal * (1 - DISCOUNT_RATE)) : round2(subtotal);
 }
