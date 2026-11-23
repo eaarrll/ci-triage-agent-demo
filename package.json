@@ -1,0 +1,16 @@
+{
+  "name": "acme-shop",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Demo storefront library used to show ci-triage-agent on real failing CI runs.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "report": "node scripts/build-report.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.12"
+  }
+}

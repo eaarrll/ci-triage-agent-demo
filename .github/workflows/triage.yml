@@ -1,0 +1,21 @@
+name: CI triage
+
+on:
+  workflow_run:
+    workflows: [CI, Deploy preview]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  triage:
+    if: contains(fromJSON('["failure", "timed_out", "success"]'), github.event.workflow_run.conclusion)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: eaarrll/ci-triage-agent@v1
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  sales-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # The report runs on small shared runners in production; keep the heap bounded here too.
+      NODE_OPTIONS: --max-old-space-size=128
+      REPORT_ORDERS: "50000"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run report
+
+  publish:
+    needs: [test, sales-report]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Would publish acme-shop $GITHUB_SHA"
