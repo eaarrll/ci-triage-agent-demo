@@ -14,3 +14,7 @@ GitHub-hosted runners, and the triage comment on each PR was written by the acti
 | image tag typo | a Kubernetes image tag that does not exist (real `kind` cluster) | configuration |
 
 `main` stays green. The triage workflow is [`.github/workflows/triage.yml`](.github/workflows/triage.yml).
+
+## License
+
+MIT
