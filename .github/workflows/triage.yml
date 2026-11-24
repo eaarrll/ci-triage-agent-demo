@@ -10,6 +10,9 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: ci-triage-${{ github.event.workflow_run.workflow_id }}-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
+
 jobs:
   triage:
     if: contains(fromJSON('["failure", "timed_out", "success"]'), github.event.workflow_run.conclusion)
